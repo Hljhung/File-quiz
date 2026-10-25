@@ -1,0 +1,490 @@
+/* ============================================================================
+ *  css/coding.css — VÙNG LẬP TRÌNH KHỐI KIỂU SCRATCH (bản 2.0)
+ *  ---------------------------------------------------------------------------
+ *  Quy ước đặt tên:
+ *    .coding-*  : khung/bố cục của cả vùng lập trình
+ *    .cb-*      : một khối lệnh (cb = code block)
+ *    .co-*      : bảng kết quả "Chạy thử" (co = coding output)
+ *  Màu khối lấy theo nhóm, giống màu nhóm lệnh trong Scratch:
+ *    Biến #ff8c1a · Toán #59c059 · Điều kiện #ffab19 · Chuỗi #ff6680
+ *    Câu hỏi #4c97ff
+ * ========================================================================== */
+
+/* ------------------------------ KHUNG CHUNG ------------------------------ */
+.coding-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 420px;
+    background: #f6f8fb;
+}
+
+.coding-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5eaf0;
+    flex-wrap: wrap;
+}
+
+.coding-vars {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 240px;
+}
+
+.coding-vars label {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #475569;
+    white-space: nowrap;
+}
+
+.coding-vars .form-input {
+    max-width: 340px;
+    padding: 7px 10px;
+    font-size: 12.5px;
+}
+
+.coding-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.coding-actions .btn {
+    padding: 7px 14px;
+    font-size: 12.5px;
+}
+
+.coding-hint {
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #64748b;
+    background: #eef5ff;
+    border-bottom: 1px solid #dbe8fb;
+}
+
+.coding-hint code {
+    background: #fff;
+    border: 1px solid #cfe0f7;
+    border-radius: 5px;
+    padding: 1px 5px;
+    font-size: 11.5px;
+    color: #2f6fd0;
+    font-family: Consolas, "Courier New", monospace;
+}
+
+/* --------------------------- BỐ CỤC 2 CỘT ------------------------------- */
+.coding-main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Danh mục khối bên trái */
+.coding-palette {
+    width: 310px;
+    flex-shrink: 0;
+    padding: 10px;
+    overflow-y: auto;
+    background: #edf1f7;
+    border-right: 1px solid #dde4ee;
+}
+
+.coding-cat { margin-bottom: 12px; }
+
+.coding-cat-title {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 5px 9px;
+    border-radius: 7px;
+    margin-bottom: 7px;
+    letter-spacing: .2px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .18);
+}
+
+.coding-cat-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding-left: 4px;
+}
+
+/* Vùng 3 chương trình bên phải */
+.coding-workspace {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    overflow-y: auto;
+    background: #f6f8fb;
+}
+
+.coding-stack {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(15, 32, 64, .05);
+}
+
+.coding-stack-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 800;
+    padding: 7px 14px;
+    border-radius: 14px 14px 6px 6px;
+    min-width: 210px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .16);
+}
+
+/* Chồng "khi bắt đầu" dùng màu vàng => chữ nâu đậm cho dễ đọc */
+.coding-stack[data-stack="setup"] .coding-stack-head { color: #4a3600; }
+
+.coding-stack-body {
+    min-height: 46px;
+    padding-left: 12px;
+    border-left: 4px solid #e8edf4;
+    margin: 2px 0 0 6px;
+}
+
+.coding-stack-hint {
+    margin: 8px 0 0 6px;
+    font-size: 11px;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* ------------------------------- KHỐI LỆNH ------------------------------- */
+.cb {
+    position: relative;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 1.25;
+    box-shadow: 0 2px 5px rgba(15, 32, 64, .22);
+    cursor: grab;
+    user-select: none;
+    width: fit-content;
+    max-width: 100%;
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+
+.cb:active { cursor: grabbing; }
+.cb:hover { box-shadow: 0 3px 9px rgba(15, 32, 64, .3); }
+
+.cb-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 11px;
+}
+
+.cb-text { white-space: pre; }
+
+/* Màu theo nhóm */
+.cb-var   { background: #ff8c1a; }
+.cb-math  { background: #59c059; }
+.cb-logic { background: #ffab19; }
+.cb-text  { background: #ff6680; }
+.cb-quiz  { background: #4c97ff; }
+.cb-game  { background: #0fbd8c; }
+
+/* Khối tròn (reporter) và khối điều kiện (boolean) */
+.cb-shape-reporter,
+.cb-shape-boolean {
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.cb-shape-reporter > .cb-row,
+.cb-shape-boolean > .cb-row {
+    padding: 4px 10px;
+}
+
+.cb-shape-boolean { border-radius: 16px; }
+
+/* Khối hình chữ C (if / repeat) */
+.cb-shape-c,
+.cb-shape-c2 {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-bottom: 4px;
+}
+
+.cb-body {
+    margin: 0 0 0 14px;
+    padding: 2px 0 2px 10px;
+    border-left: 4px solid rgba(0, 0, 0, .14);
+    min-height: 22px;
+    border-radius: 0 0 0 4px;
+}
+
+.cb-else-label {
+    padding: 4px 11px;
+    font-size: 12px;
+}
+
+.cb-foot {
+    height: 12px;
+    border-radius: 0 0 8px 8px;
+    background: rgba(0, 0, 0, .10);
+    margin-top: 2px;
+}
+
+/* ------------------------------ Ổ NHẬP ---------------------------------- */
+.cb-slot {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 12px;
+    transition: background .12s ease, outline-color .12s ease;
+}
+
+/* Khi kéo reporter tới ổ nhập */
+.cb-slot.is-over-slot {
+    outline: 2px dashed #ffffff;
+    outline-offset: 2px;
+    background: rgba(255, 255, 255, .30);
+}
+
+/* Reporter lồng bên trong ổ */
+.cb-slot-nested { padding: 0; }
+.cb-slot-nested > .cb { box-shadow: 0 1px 3px rgba(0, 0, 0, .28); }
+
+.cb-input {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    color: #253044;
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid rgba(0, 0, 0, .12);
+    border-radius: 12px;
+    padding: 3px 7px;
+    outline: none;
+    max-width: 150px;
+}
+
+.cb-input:focus {
+    border-color: #2f6fd0;
+    box-shadow: 0 0 0 2px rgba(76, 151, 255, .35);
+}
+
+.cb-num { width: 58px; text-align: center; }
+.cb-text-input { width: 128px; }
+.cb-select { max-width: 132px; cursor: pointer; }
+
+/* --------------------------- KHE THẢ KHỐI -------------------------------- */
+.cb-gap {
+    height: 9px;
+    border-radius: 6px;
+    transition: height .12s ease, background .12s ease, box-shadow .12s ease;
+}
+
+.cb-gap.is-over {
+    height: 34px;
+    background: rgba(76, 151, 255, .16);
+    box-shadow: inset 0 0 0 2px #4c97ff;
+}
+
+/* Khe rỗng: hiện viền nét đứt + chữ gợi ý */
+.cb-gap-empty {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #c9d5e3;
+    border-radius: 10px;
+    background: #fbfdff;
+    margin: 3px 0;
+}
+
+.cb-gap-empty::after {
+    content: attr(data-empty);
+    color: #93a1b4;
+    font-size: 11.5px;
+    font-style: italic;
+    pointer-events: none;
+}
+
+/* Khe rỗng nằm trong thân khối C: nhỏ hơn, không có chữ */
+.cb-body .cb-gap-empty {
+    height: 22px;
+    border-width: 1px;
+    background: transparent;
+}
+
+.cb-gap-empty.is-over {
+    background: rgba(76, 151, 255, .20);
+}
+
+/* Trong lúc đang kéo, làm nổi các khe rỗng để dễ thấy chỗ thả */
+.coding-is-dragging .cb-gap-empty { border-color: #8bb8f5; }
+
+/* ============================================================================
+ *  BẢN 2.1: DANH MỤC KHỐI LÀ "VÙNG XOÁ"
+ *  ---------------------------------------------------------------------------
+ *  Đã bỏ nút ✕ trên mỗi khối và vùng 🗑️ riêng. Người dùng kéo khối lệnh thả
+ *  trở lại danh mục bên trái để xoá; danh mục sáng đỏ khi rê khối tới.
+ * ========================================================================== */
+.coding-palette-hint {
+    margin: 0 0 10px;
+    padding: 9px 11px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 11.5px;
+    line-height: 1.45;
+    text-align: center;
+    transition: background .14s ease, border-color .14s ease, color .14s ease;
+}
+
+.coding-palette-hint b { color: #334155; }
+.coding-palette-hint span { font-size: 11px; }
+
+.coding-palette.is-over-trash {
+    background: #ffecec;
+    box-shadow: inset 0 0 0 3px #ef4444;
+}
+
+.coding-palette.is-over-trash .coding-palette-hint {
+    background: #ffe1e1;
+    border-color: #ef4444;
+    color: #b42318;
+}
+
+.coding-palette.is-over-trash .coding-palette-hint b { color: #b42318; }
+
+/* Chú thích hai biến hệ thống trên thanh công cụ */
+.coding-sysvars {
+    font-size: 11.5px;
+    color: #0f766e;
+    background: #e6fffb;
+    border: 1px solid #99f6e4;
+    border-radius: 8px;
+    padding: 3px 8px;
+    white-space: nowrap;
+}
+
+/* ------------------------------ KHỐI MẪU -------------------------------- */
+.cb-palette {
+    cursor: grab;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(15, 32, 64, .18);
+}
+
+.cb-palette:hover { transform: translateY(-1px); }
+
+.cb-palette .cb-row {
+    padding: 7px 10px;
+    gap: 4px;
+}
+
+.cb-palette .cb-pill {
+    display: inline-block;
+    background: rgba(255, 255, 255, .92);
+    color: #253044;
+    border-radius: 12px;
+    padding: 1px 7px;
+    font-size: 11.5px;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+.cb-dragging { opacity: .45; }
+
+/* --------------------- VÙNG XOÁ (ĐÃ CHUYỂN SANG DANH MỤC) -----------------
+   Bản 2.1: không còn phần tử .coding-trash riêng. Danh mục khối bên trái chính
+   là vùng xoá — xem khối style ".coding-palette.is-over-trash" ở trên.
+   ------------------------------------------------------------------------- */
+
+/* --------------------------- BẢNG KẾT QUẢ CHẠY THỬ --------------------- */
+.coding-output {
+    border-top: 2px solid #dbe8fb;
+    background: #ffffff;
+    padding: 10px 14px;
+    max-height: 190px;
+    overflow-y: auto;
+    font-size: 12.5px;
+}
+
+.co-title {
+    font-weight: 800;
+    color: #2f6fd0;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.co-row {
+    display: flex;
+    gap: 10px;
+    padding: 4px 0;
+    border-bottom: 1px dashed #eef2f7;
+}
+
+.co-row:last-child { border-bottom: none; }
+
+.co-label {
+    flex: 0 0 130px;
+    color: #64748b;
+    font-weight: 700;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.co-vars { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.co-var {
+    background: #fff3e0;
+    border: 1px solid #ffd8a8;
+    color: #8a5200;
+    border-radius: 8px;
+    padding: 2px 8px;
+    font-size: 12px;
+}
+
+.co-text { color: #334155; flex: 1; word-break: break-word; }
+.co-score { color: #0f9d58; font-weight: 800; }
+.co-empty { color: #94a3b8; font-style: italic; }
+
+.co-error {
+    background: #fff1f1;
+    border: 1px solid #ffc9c9;
+    color: #b42318;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+/* ------------------------------ RESPONSIVE ------------------------------ */
+@media (max-width: 900px) {
+    .coding-main { flex-direction: column; }
+
+    .coding-palette {
+        width: 100%;
+        max-height: 190px;
+        border-right: none;
+        border-bottom: 1px solid #dde4ee;
+    }
+
+    .coding-cat-blocks { flex-direction: row; flex-wrap: wrap; }
+
+    .co-label { flex-basis: 92px; }
+}

@@ -1,0 +1,303 @@
+===== KIỂM THỬ SCRATCH QUIZ BUILDER 2.3 =====
+URL : file:///C:/Users/admin/OneDrive/quiz_goc/index.html
+Node: v24.22.0
+
+--- 1. NẠP TRANG ---
+  ✅ Trang nạp xong
+  ✅ Engine QuizCoding sẵn sàng
+  ✅ Giao diện QuizCodingUI sẵn sàng
+  ✅ Đủ 6 loại khối câu hỏi (đã gộp trắc nghiệm)  →  6 khối
+  ✅ Nạp đủ 12 file JS module  →  12 file
+  ✅ Có 2 lớp canvas (#canvas-content + gợi ý)
+  ✅ Có 2 biến hệ thống Thời gian / Điểm  →  Thời gian,Điểm
+  ✅ Có khối ⏱️ thời gian còn lại và ⭐ điểm hiện tại
+  ✅ Có nhóm khối "Trò chơi"
+  ✅ Điểm mặc định mỗi câu = 1000  →  1000
+  ✅ Câu hỏi có đủ trường ảnh (imageUrl/imageFit/imageAlt/imageScale)  →  4/4
+
+--- 2. TẠO KHỐI CÂU HỎI ---
+  ✅ Tạo được 2 khối  →  blocks=2
+  ✅ Khối nằm trong #canvas-content
+  ✅ DOM khớp số khối  →  2 khối
+  ✅ Mỗi khối có nút bánh răng ⚙️
+
+--- 3. NHẤN 3 LẦN (TRIPLE CLICK) ---
+  ✅ Nhấn 2 lần KHÔNG mở cấu hình
+  ✅ Double-click hiển thị đúng câu hỏi ở dạng thu nhỏ, chỉ đọc trong sân khấu  →  ordering, scale(0.339831)
+  ✅ Nhấn 3 lần MỞ cấu hình  →  Cấu hình câu hỏi: Sắp xếp thứ tự
+  ✅ Đúng khối được chọn để sửa
+
+--- 3b. SỬA CÂU HỎI TỪ KHỐI TRONG WORKSPACE ---
+  ✅ Bấm nút ⚙️ trên khối mở được bảng cấu hình
+  ✅ Form có ô nhập câu hỏi / điểm / thời gian
+  ✅ Form có ô ghi chú + công tắc bật ghi chú
+  ✅ Form có danh sách đáp án kèm ô tick "Đúng"  →  4 dòng
+  ✅ Form có công tắc xáo trộn đáp án, mặc định tắt
+  ✅ Form cấu hình không hiển thị số lượng đáp án đúng
+  ✅ Dòng đáp án hiển thị đúng nội dung (không phải [object Object])  →  Đáp án A
+  ✅ Bấm "Lưu cấu hình" đóng modal
+  ✅ Nội dung câu hỏi đã lưu  →  Cau hoi da sua tu workspace
+  ✅ Điểm đã lưu  →  2500
+  ✅ Ghi chú đã lưu  →  Ghi chu da sua
+  ✅ Đáp án đã sửa được lưu  →  Dap an da sua
+  ✅ Cờ "Đúng" chuyển đúng dòng (1 đáp án đúng)  →  1 đáp án đúng ở index 1
+  ✅ Trạng thái bật xáo trộn được lưu cùng câu hỏi  →  true
+  ✅ Khối trong workspace được vẽ lại với nội dung mới
+  ✅ Nút "+ Thêm đáp án" vẫn hoạt động
+
+--- 3c. XÁO TRỘN ĐÁP ÁN TRẮC NGHIỆM ---
+  ✅ Bật xáo trộn làm đổi thứ tự đáp án nhưng giữ đúng ánh xạ đáp án  →  Đáp án B,Đáp án C,Đáp án D,Đáp án A; chọn một=true; chọn nhiều=true
+  ✅ Tắt xáo trộn giữ nguyên thứ tự ban đầu  →  Đáp án A,Đáp án B,Đáp án C,Đáp án D
+  ✅ Mở lại modal lần 2 vẫn có ô nhập câu hỏi
+  ✅ Mở lại modal hiển thị đúng nội dung đã lưu  →  Cau hoi da sua tu workspace
+  ✅ Mở lại modal giữ trạng thái xáo trộn đã lưu  →  true
+
+--- 4. TAB & GIAO DIỆN KHỐI LỆNH ---
+  ✅ Tab "Lập trình khối" hiển thị
+  ✅ Modal mở rộng ở chế độ coding
+  ✅ Đủ 6 nhóm khối (thêm nhóm Trò chơi)  →  6 nhóm
+  ✅ Đủ khối mẫu trong danh mục  →  22/22 khối
+  ✅ Có 3 chương trình  →  3 chương trình
+  ✅ Có ô quản lý biến + chú thích biến hệ thống
+  ✅ KHÔNG còn nút ✕ trên khối lệnh  →  0 nút ✕
+  ✅ KHÔNG còn vùng xoá 🗑️ riêng  →  0 vùng
+  ✅ Danh mục có dải nhắc "kéo vào đây để xoá"
+
+--- 5. KÉO KHỐI LỆNH (DRAG & DROP) ---
+  ✅ Thả được khối vào "khi bắt đầu"  →  node=set_var
+  ✅ Khối được vẽ lại trong chương trình  →  1 khối
+  ✅ Badge đếm số khối trên tab  →  badge=1
+
+--- 6. CHẠY THỬ CHƯƠNG TRÌNH KHỐI LỆNH ---
+  ✅ Chạy thử không lỗi
+  ✅ Random hoá câu hỏi bằng placeholder  →  Tính 5 + 9 = ?
+  ✅ Random hoá đáp án đúng  →  kq=14, đáp án=14
+  ✅ Công thức điểm tuỳ biến (a + 5)  →  điểm=10, mong đợi=10
+  ✅ Lời nhắn khi sai thay được biến  →  Gợi ý: 5 + 9 = 14
+  ✅ Khối hiển thị dấu 🧩
+  ✅ Bấm "Lưu cấu hình" đóng modal
+  ✅ Giữ đủ 3+1+1 khối lệnh sau khi lưu  →  3/1/1
+  ✅ Nội dung câu hỏi giữ placeholder  →  Tính {{a}} + {{b}} = ?
+  ✅ Đáp án đúng duy nhất được lưu  →  1 đáp án đúng
+
+--- 7. CHẠY QUIZ (RUNTIME RANDOM) ---
+  ✅ Chuyển sang chế độ chơi
+  ✅ CHỈ hiển thị 1 câu tại một thời điểm (kiểu Quiz.com)  →  1 câu
+  ✅ Câu hỏi runtime đã random  →  Tính 7 + 6 = ?
+  ✅ Đáp án runtime đã thay số  →  Đáp án A
+  ✅ Dữ liệu gốc trong builder giữ nguyên placeholder  →  Tính {{a}} + {{b}} = ?
+  ✅ Có bảng biến runtime
+  ✅ Có biến hệ thống trong ngữ cảnh runtime  →  Thời gian=30, Điểm=0
+  ✅ Câu hỏi 1 đáp án KHÔNG có nút nộp (bấm là nộp)
+  ✅ Có thanh thời gian ngang (không phải đồng hồ chữ số)
+  ❌ Thanh thời gian bắt đầu đầy (100%)
+  ✅ Điểm trên thanh thời gian là con số  →  0
+  ✅ Tiến trình hiển thị đúng câu hiện tại  →  Câu 1 / 2
+  ✅ Màn hình chơi không hiển thị gợi ý số lượng đáp án đúng
+  ✅ Câu hỏi không có ảnh => căn giữa (.is-centered)
+  ✅ Câu hỏi được tách thành từng ký tự  →  14 ký tự
+  ✅ Tổng thời gian hiện chữ ≈ 3 giây  →  3000ms
+  ✅ Có nền tối ngẫu nhiên (--quiz-bg)  →  #14342b
+  ✅ Lớp icon rơi hoạt động và không chặn chuột  →  4 icon
+
+--- 7b. THANH THỜI GIAN ĐẾM NGƯỢC ---
+  ❌ Thanh thời gian ngắn dần theo thời gian thực  →  nulls → nulls
+  ❌ Thời gian còn lại chính xác (sai số < 0.4s)  →  nulls
+
+--- 8. BẤM LỰA CHỌN LÀ NỘP BÀI (1 đáp án) + CHẤM ĐIỂM ---
+  ✅ Không có nút nộp ở câu 1 đáp án
+  ✅ Bấm một lựa chọn là nộp luôn (khoá lựa chọn)
+  ✅ Phản hồi trắc nghiệm chỉ đổi viền xanh/đỏ, không đổi nền hay làm mờ  →  rgb(34, 197, 94) / rgb(239, 68, 68)
+  ✅ Trả lời đúng được ghi nhận
+  ✅ Điểm cộng theo công thức người dùng  →  nhận 12 / mong đợi 12
+  ✅ Thanh điểm tổng cập nhật  →  ⭐ 12 điểm
+  ✅ Thời gian còn lại được lưu vào kết quả câu  →  27.4s
+  ✅ Biến hệ thống "Thời gian" = thời gian còn lại lúc nộp  →  biến=27.35410000002384, lưu=27.4
+  ❌ Thanh thời gian bị chốt (is-frozen)
+  ❌ Điểm trên thanh = điểm thực nhận  →  0
+  ✅ Sau khi nộp CHƯA có nút chuyển câu
+
+--- 8b. GHI CHÚ NỔI & NÚT CHUYỂN CÂU (3 giây) ---
+  ✅ Ghi chú nổi hiện NGAY sau khi nộp bài
+  ✅ Ghi chú đã thay biến {{a}}/{{b}}/{{kq}}  →  Ghi chú kiểm thử: 7 + 6 = 13
+  ✅ Có nút thu gọn ghi chú
+  ✅ Thu gọn => ẩn nội dung ghi chú
+  ✅ Nhấn lần nữa => mở lại ghi chú
+  ✅ Sau 3 giây mới xuất hiện nút chuyển câu  →  Câu tiếp theo →
+
+--- 8c. CHUYỂN CÂU BẰNG NÚT ---
+  ✅ Vẫn chỉ có 1 câu trên màn hình  →  1 câu
+  ✅ Đã sang câu 2 (index = 1)  →  index=1
+  ✅ Câu 2 đúng loại đã tạo (ordering)  →  ordering
+  ❌ Thanh thời gian được làm mới cho câu 2  →  nulls
+  ✅ Tiến trình cập nhật "Câu 2 / 2"  →  Câu 2 / 2
+  ✅ Ghi chú nổi được ẩn khi sang câu mới
+  ✅ Câu sắp xếp có các hàng + tay cầm kéo "="  →  3 hàng / 3 tay cầm
+  ✅ Câu sắp xếp có nút "Nộp đáp án"  →  Nộp đáp án
+
+--- 8d. BẢNG TỔNG KẾT ---
+  ✅ Câu cuối có nút "Xem kết quả"  →  🏁 Xem kết quả
+  ✅ Bấm nút => hiện bảng tổng kết
+  ✅ Bảng tổng kết đủ 2 dòng  →  2 dòng
+  ✅ Mỗi dòng có cột thời gian còn lại  →  ⏱️ 27.4s | ⏱️ 27.7s
+  ✅ Stack "khi trả lời sai" tạo lời nhắn  →  Gợi ý: 8 + 4 = 12
+
+--- 9b. ENGINE: VÒNG LẶP / ĐIỀU KIỆN / CLOZE ---
+  ✅ Vòng lặp "lặp 3 lần" chạy đúng  →  a=6
+  ✅ Khối điều kiện if/else rẽ nhánh đúng  →  lớn hơn
+  ✅ Cloze giữ {{1}} và thay {{y}}  →  A {{1}} B Xong
+  ✅ Cloze thay biến trong đáp án  →  Xong
+  ✅ Không có khối lệnh => dùng điểm mặc định  →  1000 điểm
+  ✅ Công thức điểm dùng được biến "Thời gian"  →  thời gian 12.5s → 12.5 điểm
+  ✅ Biến "Điểm" = tổng điểm truyền vào  →  5
+  ✅ Không ghi được vào biến hệ thống (chỉ đọc)  →  7
+  ✅ Khối "điểm hiện tại" đọc đúng biến "Điểm"  →  33
+
+--- 9c. GỘP LOẠI TRẮC NGHIỆM ---
+  ✅ Loại "multi-answer" chỉ còn là bí danh ẩn
+  ✅ Chọn 1 ⇒ nút viên thuốc (opt-pill), không có ô tích  →  2 pill / 0 check
+  ✅ Chọn nhiều ⇒ nút chữ nhật (opt-rect) + ô tích ✓  →  3 rect / 3 check
+  ✅ Chỉ dạng chọn nhiều mới có nút "Nộp đáp án"
+  ✅ Câu chọn-một: bấm lựa chọn là nộp luôn  →  [true,true]
+  ✅ Câu chọn-nhiều: tích đủ đáp án rồi nộp ⇒ đúng  →  [true,true]
+  ✅ Bấm lại để bỏ tích (chọn-nhiều)  →  3 → 2
+  ✅ Lựa chọn không bị làm mờ sau khi nộp  →  0 / 0
+
+--- 10. KÉO KHỐI CÂU HỎI TRONG WORKSPACE ---
+  ✅ Kéo khối di chuyển đúng theo con trỏ (dx=120)  →  dx=120
+  ✅ Kéo khối di chuyển đúng theo con trỏ (dy=80)  →  dy=80
+  ✅ Khối vẫn còn trong workspace sau khi kéo
+
+--- 11. ZOOM (CTRL + LĂN CHUỘT) ---
+  ✅ Zoom tăng đúng 0.1  →  scale=1.1
+  ✅ Điểm neo dưới con trỏ không bị trôi  →  x=300.00, y=200.00
+  ✅ data-zoom được cập nhật  →  1.1
+  ✅ Khung cuộn mở rộng theo zoom  →  2200px x 3300px
+  ✅ Cuộn tới điểm neo (scroll > 0)  →  30 / 20
+
+--- 12. PAN VÙNG LÀM VIỆC ---
+  ✅ Pan ngang đúng 1:1 khi đang zoom  →  dx=20 @ scale 1.1
+  ✅ Pan dọc đúng 1:1 khi đang zoom  →  dy=30
+
+--- 13. LƯU / KHÔI PHỤC DỰ ÁN ---
+  ✅ Dự án lưu kèm chương trình khối lệnh
+  ✅ Khôi phục đủ số câu hỏi  →  2 câu
+  ✅ Khôi phục đủ 5 khối lệnh  →  5 khối
+  ✅ Khôi phục danh sách biến  →  a,b,kq
+  ✅ Khôi phục placeholder câu hỏi  →  Tính {{a}} + {{b}} = ?
+  ✅ Khối sau khôi phục có dấu 🧩
+
+--- 13b. XOÁ KHỐI LỆNH BẰNG KÉO VỀ DANH MỤC ---
+  ✅ Danh mục sáng đỏ khi rê khối lệnh tới
+  ✅ Thả khối lệnh vào danh mục => khối bị XOÁ  →  4 khối → 3 khối
+  ✅ Giao diện vẽ lại đúng số khối  →  3 khối
+  ✅ KHÔNG có nút ✕ nào trong vùng lập trình
+  ✅ Có thông báo đã xoá khối lệnh  →  🗑️ Đã xoá khối lệnh "đặt =".
+
+--- 13c. NÂNG CẤP DỰ ÁN CŨ ---
+  ✅ Dự án cũ (multi-answer) được gộp sang multiple-choice  →  multiple-choice
+  ✅ Giữ nguyên số đáp án đúng sau khi gộp  →  2 đáp án đúng
+  ✅ Dự án cũ mặc định giữ nguyên thứ tự đáp án
+
+--- 15. ẢNH CỦA CÂU HỎI ---
+  ✅ Form có ô URL ảnh + ô chọn tệp + 2 nút ảnh
+  ✅ Form có khung xem trước + chọn chế độ hiển thị
+  ✅ Câu hỏi có ảnh ⇒ thẻ có class .has-image + khung ảnh
+  ✅ Bố cục 2 cột được áp dụng cho câu hỏi có ảnh  →  grid / 2 cột
+  ✅ Khung ảnh có 8 điểm kéo lề  →  8 handle
+  ✅ Câu hỏi chọn vùng trên ảnh KHÔNG dùng bố cục 2 cột  →  block
+  ✅ Khối trong workspace hiển thị chip "🖼️ Có ảnh"
+  ✅ Ảnh thay được placeholder {{anh}}  →  https://x/hinh1.png
+
+--- 16. SẮP XẾP: KÉO–THẢ & BUBBLE SORT ---
+  ✅ Kéo hàng đầu xuống 2 hàng ⇒ thứ tự thay đổi đúng  →  BADC → ADBC
+  ✅ Các hàng bị đi qua tự đẩy lên (có transform)  →  2 hàng bị đẩy
+  ✅ Hàng được kéo nổi theo con trỏ với bóng đổ rõ  →  fixed / 1196.3px / rgba(0, 0, 0, 0.42) 0px 16px 30px 0px
+  ✅ Khi bắt đầu kéo, ô giữ nguyên tọa độ và thoát khỏi vùng có transform  →  tọa độ trước/sau: (75.09999084472656, 1093.7349853515625) / (75.09375, 1093.734375)
+  ✅ Khe giữ chỗ di chuyển trực tiếp theo vị trí thả  →  vị trí khe: 2
+  ✅ Khi thả, danh sách giữ transition trong lúc hít vào vị trí  →  transform 0.2s cubic-bezier(0.2, 0.75, 0.25, 1)
+  ✅ Đánh số lại sau khi kéo  →  1234
+  ✅ Câu trả lời sai chuyển ô sai sang đỏ và lắc  →  4 ô / sort-shake / rgb(252, 165, 165) / rgb(220, 38, 38)
+  ✅ Nộp sai ⇒ animation bubble sort sắp lại đúng thứ tự  →  ABCD
+  ✅ Sau bubble sort, cả 4 hàng được đánh dấu đúng  →  4 hàng
+  ✅ Đáp án đúng chuyển toàn bộ ô sang xanh lá  →  rgb(134, 239, 172) / rgb(22, 163, 74) / sort-correct / 0s
+
+--- 17. NỐI Ô: EDITOR TRỰC QUAN ---
+  ✅ Editor nối ô có 2 cột + cúc tròn ở cả hai bên (và modal thật cũng dùng editor này)  →  2 cột, 2/2 cúc
+  ✅ Bấm cúc trái (chọn khái niệm) rồi cúc phải ⇒ nối được 1 cặp  →  1 cúc được chọn, 1 cặp đã nối
+  ✅ Sợi dây SVG được vẽ đúng số cặp đã nối  →  1 → 2 sợi dây
+  ✅ 1 khái niệm nối được NHIỀU giải thích (quan hệ 1-n)  →  2 giải thích cho 1 khái niệm
+  ✅ Bấm lại cúc đã nối ⇒ tách cặp, và lưu cấu hình ghi đúng dữ liệu  →  còn 1 cặp, lưu 2 khái niệm / 2 giải thích
+  ✅ Editor GIỮ NGUYÊN giao diện cấu hình (không dùng kiểu "1 nút/ô" của Player)  →  dùng kiểu Player=false, còn nút "+"=true
+
+--- 17b. NỐI Ô: BỐ CỤC PLAYER VIEW ---
+  ✅ Matching Player View giữ hai cột cân đối và điểm nối hướng vào khoảng giữa  →  2 cột; cân đối=true; điểm nối đúng vị trí=true
+  ✅ Bấm hai điểm nối tạo được đường SVG  →  1 đường nối
+
+--- 17c. NỐI Ô: MỞ LẠI CẤU HÌNH LẦN 2 ---
+  ✅ Mở cấu hình nối ô lần 1 vẽ đủ đường nối và bám đúng cúc tròn  →  2 đường; lệch tối đa 0.00px
+  ✅ Mở lại cấu hình nối ô lần 2 vẽ đúng vị trí (không bị lệch)  →  2 đường; lệch tối đa 0.00px
+
+--- 17d. NỐI Ô: CHƠI THẬT, NỐI ĐỦ CÁC CẶP ---
+  ✅ Player giữ nguyên schema nối ô (id / concept / explanations)
+  ✅ Hai cột Player hiện đúng nội dung khái niệm và giải thích  →  Khái niệm 1 | Khái niệm 2 | Khái niệm 3
+  ✅ Player View: mỗi ô match-box chỉ có ĐÚNG 1 button  →  trái 3/3 ô, phải 3/3 ô
+  ✅ Kéo nối thì có dây nháp bám theo con trỏ, thả ra thì dây nháp biến mất  →  1 dây nháp; sau khi thả còn 0
+  ✅ Kéo từ nút trái sang nút phải nối được đủ các cặp  →  1:1đường, 2:2đường, 3:3đường
+  ✅ Dây nối xuất phát từ nút trái và neo chính xác vào nút phải  →  lệch đầu 0.00px, lệch cuối 0.00px
+  ✅ Nút đã nối được tô xanh ở cả hai cột  →  trái=3 phải=3
+  ✅ Bấm nút phải đang nối thì bỏ nối được (không bị kẹt)  →  2 đường còn lại
+
+--- 17e. NỐI Ô: 1 KHÁI NIỆM NỐI NHIỀU GIẢI THÍCH (1-N) ---
+  ✅ Quan hệ 1-n: ô khái niệm vẫn chỉ có 1 nút dù nối nhiều giải thích  →  1 nút
+  ✅ Quan hệ 1-n: mọi dây nối đều xuất phát từ CÙNG một nút trái  →  2 dây / 2 nối; lệch neo 0.00px
+
+--- 17f. NỐI Ô: QUAN HỆ NHIỀU-NHIỀU ---
+  ✅ Nối thêm giải thích cho cùng một khái niệm thì dây cũ KHÔNG bị mất  →  1 → 2 dây
+  ✅ Nối cùng một giải thích cho nhiều khái niệm thì dây cũ KHÔNG bị mất  →  2 → 3 dây
+  ✅ Dữ liệu cặp nối lưu dạng DANH SÁCH MẢNG [khái niệm, giải thích]  →  [["c1","Gải thích A"],["c1","Gải thích B"],["c2","Gải thích A"]]
+  ✅ Nút hiển thị số nối (trái = số giải thích, phải = số khái niệm)  →  trái=2,1 phải=2,1
+  ✅ Bấm nút phải đang nối nhiều khái niệm ⇒ gỡ hết các cặp của nút đó  →  3 → 1 dây
+
+--- 17g. NỐI Ô: CHUYỂN ĐỔI DỮ LIỆU CŨ ---
+  ✅ Dự án cũ (answers dạng object) vẫn nối và vẽ đúng đường nối  →  1 đường; đã chuyển sang danh sách mảng=true
+
+--- 17h. NỐI Ô: PHẢN HỒI MÀU SAU KHI NỘP ---
+  ✅ Nộp Matching tô đúng xanh, sai đỏ và cặp còn thiếu vàng  →  xanh 1, đỏ 1, vàng 2, tổng 4
+
+--- 18. ĐIỀN ĐOẠN VĂN (CLOZE) ---
+  ✅ Đoạn văn cloze hiện từ từ trong đúng 3 giây (animation-delay chia đều)  →  5 mảnh, kết thúc ở 3000ms
+  ✅ 1 ô trống có NHIỀU đáp án đúng  →  2 đáp án đúng
+  ✅ Trả lời sai ⇒ ô đỏ + ô vàng #FEF3C7 liệt kê các đáp án đúng  →  rgb(254, 243, 199), 3 lựa chọn trong danh sách vàng
+  ✅ Trả lời đúng, có khoảng trắng thừa và khác hoa/thường ⇒ ô xanh
+  ✅ Ô chỉ có 1 đáp án đúng ⇒ hiện gợi ý chữ, không hiện danh sách  →  Đáp án: Việt Nam
+  ✅ Để trống toàn bộ ô vẫn nộp được, hiện ô đỏ và danh sách đáp án vàng
+  ✅ Editor gộp tên, đoạn văn và danh sách đáp án trong cùng một nhóm  →  không có trường đoạn văn riêng; đã lưu đoạn văn cùng đáp án
+  ✅ Đáp án Cloze được giữ nguyên và chấm đúng sau khi tạo bản runtime
+  ✅ Player không lặp đoạn văn Cloze ở phần tiêu đề câu hỏi
+
+--- 19. CHỌN TỪ DANH SÁCH (DROPDOWN) ---
+  ✅ Đoạn văn dropdown hiện từ từ trong đúng 3 giây (animation-delay chia đều)  →  5 mảnh, kết thúc ở 3000ms
+  ✅ Mỗi ô thả có DANH SÁCH LỰA CHỌN RIÊNG  →  Đông Nam Á | Hà Nội
+  ✅ Editor dropdown: nội dung nằm trong nhóm câu hỏi, mỗi chỗ trống có lựa chọn riêng  →  2 ô, 4 radio, 0 nút dùng chung
+  ✅ Thêm {{N}} vào nội dung câu hỏi tự tạo cấu hình danh sách chọn tương ứng  →  3 chỗ trống
+  ✅ Sau khi nộp: đúng ⇒ xanh, sai ⇒ đỏ
+  ✅ Sau khi nộp: có nút ▾ xem lại lựa chọn và KHÔNG đổi được nữa
+
+--- 20. CHỌN VÙNG TRONG ẢNH (HOTSPOT) ---
+  ✅ Editor hotspot hiện ảnh + nút "+ Thêm ô đỏ" + ô đỏ độ mờ 50%  →  rgba(239, 68, 68, 0.5), 4 nút trên đầu ô
+  ✅ Nút ＋ / － đổi kích thước ô đỏ  →  20% → 22% → 20%
+  ✅ Kéo ô đỏ trên ảnh để chuyển vị trí  →  20% → 30.4%
+  ✅ Lưu cấu hình ghi toạ độ/kích thước THẬT của ô đỏ  →  x=30.4%, w=20%
+  ✅ Có thể đổi vùng chọn hình chữ nhật thành hình tròn và lưu hình dạng  →  circle
+  ✅ Sau khi nộp, đáp án vàng, vùng người chơi đỏ và phần giao xanh  →  1 vùng giao màu xanh
+  ✅ Tên vùng người chơi trùng với tên vùng đã đặt trong Editor  →  Miền Bắc / Miền Bắc
+  ✅ Giao hình tròn–chữ nhật loại đúng vùng nằm ngoài đường tròn  →  0 vùng giao, ❌ Chưa đúng
+
+--- 14. LỖI CONSOLE / RUNTIME ---
+  ✅ Không có lỗi runtime trong suốt quá trình test
+
+================ KẾT QUẢ ================
+  Tổng: 223  |  Đạt: 217  |  Lỗi: 6
+  ❌ CÓ KIỂM THỬ THẤT BẠI
+=========================================

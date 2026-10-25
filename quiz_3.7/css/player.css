@@ -1,0 +1,1369 @@
+/* ============================================================================
+ *  css/player.css — GIAO DIỆN CHƠI QUIZ & BẢNG KẾT QUẢ
+ *  ---------------------------------------------------------------------------
+ *  Chứa: quiz-shell, thanh tiến trình, thẻ câu hỏi, ghi chú, các dạng trả lời
+ *  (trắc nghiệm, sắp xếp, nối ô, vùng ảnh, điền khuyết, dropdown) và bảng
+ *  tổng kết cuối buổi.
+ * ========================================================================== */
+
+
+/* ============================================================
+   PHẦN BỔ SUNG: GIAO DIỆN CHƠI (PLAYER)
+   ============================================================ */
+#player-view {
+    /* Bản 2.2: nền TỐI ngẫu nhiên cho mỗi lượt chơi (do player.js đặt biến) */
+    background: var(--quiz-bg, #17494b);
+    color: #ffffff;
+}
+
+#quiz-player-container {
+    display: block;
+    overflow-y: auto;
+    padding: 26px 20px 60px;
+}
+
+.quiz-shell {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.quiz-progress {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 16px rgba(60,90,160,.12);
+    margin-bottom: 18px;
+}
+
+.quiz-progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #456;
+    margin-bottom: 9px;
+}
+
+.progress-track {
+    height: 10px;
+    background: #e6ecf7;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #4c97ff, #855CD6);
+    transition: width .45s cubic-bezier(.3,.9,.3,1);
+}
+
+.quiz-score {
+    background: #fff8e1;
+    color: #8a6d00;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 12px;
+}
+
+.question-card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 22px rgba(60,90,160,.12);
+    border-top: 5px solid #4c97ff;
+    animation: sbFadeUp .45s ease both;
+}
+
+.question-card[data-type="multi-answer"] { border-top-color: #0fbd8c; }
+.question-card[data-type="ordering"]     { border-top-color: #ffab19; }
+.question-card[data-type="matching"]     { border-top-color: #9966ff; }
+.question-card[data-type="hotspot"]      { border-top-color: #ff6680; }
+.question-card[data-type="cloze"]        { border-top-color: #cf63cf; }
+.question-card[data-type="cloze"] .q-text { display: none; }
+.question-card[data-type="dropdown"]     { border-top-color: #ff7b8b; }
+
+.q-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.q-number {
+    background: #4c97ff;
+    color: white;
+    border-radius: 20px;
+    padding: 3px 13px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.q-type {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7a90;
+    background: #f1f5fb;
+    border-radius: 20px;
+    padding: 3px 12px;
+}
+
+.q-timer {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 800;
+    color: #ff5252;
+    background: #fff0f0;
+    border-radius: 20px;
+    padding: 3px 12px;
+}
+
+.q-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2b3445;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.q-note {
+    background: #fffbe6;
+    border-left: 4px solid #ffab19;
+    padding: 9px 13px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: #7a6320;
+    margin-bottom: 13px;
+    animation: sbFadeUp .35s ease both;
+}
+
+/* Ô trắc nghiệm */
+.option-list { display: flex; flex-direction: column; gap: 9px; }
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    border: 2px solid #e3e8f0;
+    background: #fbfcfe;
+    border-radius: 11px;
+    padding: 11px 14px;
+    font-size: 14px;
+    color: #35405a;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    transition: all .18s ease;
+    animation: sbFadeUp .35s ease both;
+}
+
+.option-btn:hover:not(:disabled) {
+    border-color: #4c97ff;
+    background: #f2f8ff;
+    transform: translateX(5px);
+}
+
+.option-btn.selected {
+    border-color: #4c97ff;
+    background: #eaf3ff;
+    font-weight: 700;
+}
+
+.option-btn.is-correct {
+    border-color: #22c55e;
+}
+
+.option-btn.is-wrong {
+    border-color: #ef4444;
+}
+
+.option-btn:disabled { cursor: default; }
+
+.option-key {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background: #e8edf5;
+    color: #5a6a83;
+    font-weight: 800;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    transition: background .18s ease, color .18s ease;
+}
+
+.option-btn.selected .option-key { background: #4c97ff; color: white; }
+
+.option-check {
+    width: 21px;
+    height: 21px;
+    border-radius: 6px;
+    border: 2px solid #cfd6e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    font-size: 13px;
+    color: white;
+}
+
+.option-btn.selected .option-check { background: #4c97ff; border-color: #4c97ff; }
+
+/* --- Sắp xếp thứ tự --- */
+.sort-list { display: flex; flex-direction: column; gap: 9px; }
+
+.sort-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: #fbfcfe;
+    border: 2px solid #e3e8f0;
+    border-radius: 11px;
+    padding: 11px 14px;
+    cursor: grab;
+    font-size: 14px;
+    color: #35405a;
+    transition: all .18s ease;
+    animation: sbFadeUp .35s ease both;
+    user-select: none;
+}
+
+.sort-item:hover { border-color: #ffab19; background: #fffaf0; }
+.sort-item.drag-over { border-color: #ffab19; background: #fff4dd; transform: scale(1.02); }
+.sort-handle { font-size: 17px; color: #9aa7ba; cursor: grab; }
+.sort-pos {
+    width: 27px; height: 27px; border-radius: 50%;
+    background: #ffab19; color: white;
+    font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto;
+}
+
+/* --- Nối ô (Matching) --- */
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 22px; }
+.match-col { display: flex; flex-direction: column; gap: 9px; }
+
+.match-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 2px solid #e3e8f0;
+    background: #fbfcfe;
+    border-radius: 11px;
+    padding: 11px 13px;
+    font-size: 13.5px;
+    color: #35405a;
+    cursor: pointer;
+    transition: all .18s ease;
+    animation: sbFadeUp .35s ease both;
+}
+
+.match-item:hover { border-color: #9966ff; background: #f8f4ff; transform: translateY(-2px); }
+.match-item.selected { border-color: #9966ff; background: #f1eaff; font-weight: 700; }
+.match-item.is-correct { border-color: #22c55e; background: #e8fbee; animation: correct-flash .7s ease-out; }
+.match-item.is-wrong { border-color: #ef4444; background: #fdecec; animation: wrong-flash .7s ease-out; }
+.match-item.done { opacity: .55; }
+
+.match-dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid #cbd3df; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: white;
+}
+
+.match-item.selected .match-dot { background: #9966ff; border-color: #9966ff; }
+.match-item.is-correct .match-dot { background: #22c55e; border-color: #22c55e; }
+.match-item.is-wrong .match-dot { background: #ef4444; border-color: #ef4444; }
+
+/* --- Chọn vùng trên ảnh (Hotspot) --- */
+.hotspot-wrap { position: relative; display: inline-block; max-width: 100%; }
+.hotspot-stage {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #eef2f8;
+    border: 2px solid #e3e8f0;
+}
+
+.hotspot-bg {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.hotspot-region {
+    position: absolute;
+    border: 2px dashed #ff6680;
+    background: rgba(255,102,128,.16);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .2s ease;
+    animation: sbPopIn .4s ease both;
+}
+
+.hotspot-region:hover { background: rgba(255,102,128,.3); transform: scale(1.03); }
+.hotspot-region.selected { border-style: solid; border-color: #4c97ff; background: rgba(76,151,255,.28); }
+.hotspot-region.is-correct { border-color: #22c55e; background: rgba(34,197,94,.3); animation: correct-flash .7s ease-out; }
+.hotspot-region.is-wrong { border-color: #ef4444; background: rgba(239,68,68,.3); animation: wrong-flash .7s ease-out; }
+
+.region-label {
+    position: absolute;
+    top: 5px; left: 7px;
+    background: rgba(255,255,255,.92);
+    color: #333;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1px 7px;
+}
+
+.hotspot-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px;
+    background: linear-gradient(135deg, #ffeef2, #e8f0ff);
+}
+
+.hotspot-hint { font-size: 12px; color: #8b95a3; margin-top: 7px; font-style: italic; }
+
+/* --- Điền từ vào đoạn văn (Cloze) --- */
+.cloze-text {
+    font-size: 15px;
+    line-height: 2.3;
+    color: #2f3a4d;
+    background: #fbfcfe;
+    border: 1px solid #e8ecf2;
+    border-radius: 11px;
+    padding: 16px 18px;
+}
+
+.cloze-blank {
+    display: inline-block;
+    min-width: 130px;
+    border: none;
+    border-bottom: 2px solid #cf63cf;
+    background: #fdf0fd;
+    border-radius: 6px 6px 0 0;
+    padding: 3px 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #7d2f7d;
+    text-align: center;
+    transition: all .18s ease;
+}
+
+.cloze-blank:focus {
+    outline: none;
+    background: #fbe4fb;
+    border-bottom-color: #cf63cf;
+    box-shadow: 0 0 0 3px rgba(207,99,207,.18);
+}
+
+.cloze-blank.is-correct { background: #e8fbee; color: #12833f; border-bottom-color: #22c55e; }
+.cloze-blank.is-wrong { background: #fdecec; color: #b91c1c; border-bottom-color: #ef4444; animation: wrong-flash .7s ease-out; }
+
+/* --- Chọn từ trong danh sách (Dropdown cloze) --- */
+.dropdown-text {
+    font-size: 15px;
+    line-height: 2.4;
+    color: #2f3a4d;
+    background: #fbfcfe;
+    border: 1px solid #e8ecf2;
+    border-radius: 11px;
+    padding: 16px 18px;
+}
+
+.inline-select {
+    display: inline-block;
+    border: 2px solid #ff7b8b;
+    background: #fff5f6;
+    border-radius: 8px;
+    padding: 3px 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #a83a48;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .18s ease;
+    animation: sbDropDown .3s ease both;
+}
+
+.inline-select:focus { outline: none; box-shadow: 0 0 0 3px rgba(255,123,139,.2); }
+.inline-select.is-correct { border-color: #22c55e; background: #e8fbee; color: #12833f; }
+.inline-select.is-wrong { border-color: #ef4444; background: #fdecec; color: #b91c1c; animation: wrong-flash .7s ease-out; }
+
+/* --- Bảng kết quả --- */
+.result-card {
+    background: white;
+    border-radius: 18px;
+    padding: 34px 26px;
+    text-align: center;
+    box-shadow: 0 10px 34px rgba(60,90,160,.16);
+    animation: sbPopIn .5s cubic-bezier(.2,.9,.3,1.3) both;
+}
+
+.result-emoji { font-size: 60px; animation: sbFloaty 3s ease-in-out infinite; }
+
+.result-title {
+    font-size: 25px;
+    font-weight: 900;
+    color: #2b3445;
+    margin: 12px 0 6px;
+}
+
+.result-score {
+    font-size: 44px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #4c97ff, #855CD6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 6px 0;
+}
+
+.result-detail { font-size: 14px; color: #6b7a90; margin-bottom: 22px; }
+
+.result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+.result-list { text-align: left; margin-top: 22px; border-top: 1px solid #eef1f5; padding-top: 16px; }
+
+.result-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 4px;
+    font-size: 13.5px;
+    border-bottom: 1px solid #f3f5f8;
+}
+
+.result-row .r-icon { font-size: 16px; }
+.result-row .r-text { flex: 1; color: #46526a; }
+.result-row.ok .r-text { color: #12833f; }
+.result-row.no .r-text { color: #b91c1c; }
+
+/* --- Sân khấu xem trước & bảng thuộc tính --- */
+#stage-area {
+    background: linear-gradient(160deg, #ffffff, #f3f7ff);
+    padding: 14px;
+    overflow: hidden;
+}
+
+.stage-empty {
+    margin: auto;
+    text-align: center;
+    color: #9aa7ba;
+    font-size: 13px;
+}
+
+.stage-empty .big { font-size: 38px; display: block; margin-bottom: 8px; animation: sbFloaty 3.4s ease-in-out infinite; }
+
+.stage-preview {
+    border-radius: 10px;
+    border: 1px solid #e2e8f2;
+    background: white;
+    padding: 13px;
+    animation: sbFadeUp .35s ease both;
+}
+
+.stage-preview .sp-type {
+    font-size: 11px;
+    font-weight: 800;
+    color: #6b7a90;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+}
+
+.stage-preview .sp-text {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #2b3445;
+    margin: 5px 0 9px;
+    line-height: 1.5;
+}
+
+.stage-preview .sp-empty { color: #9aa7ba; font-style: italic; font-weight: 500; }
+
+.prop-block {
+    font-size: 12px;
+    color: #556;
+    margin-bottom: 9px;
+    padding-bottom: 9px;
+    border-bottom: 1px dashed #e3e8f0;
+}
+
+.prop-block:last-child { border-bottom: none; }
+.prop-block b { color: #2b3445; }
+.prop-title { font-size: 14px; font-weight: 800; color: #2b3445; margin-bottom: 10px; }
+.prop-empty { font-size: 13px; color: #9aa7ba; font-style: italic; }
+
+/* ============================================================
+   BẢN 2.1: CHẾ ĐỘ CHƠI TỪNG CÂU (KIỂU QUIZ.COM)
+   ------------------------------------------------------------
+   - #quiz-card-host : vùng chứa DUY NHẤT một thẻ câu hỏi
+   - .q-timebar      : thanh thời gian NGANG đếm ngược (không có chữ số)
+   - .q-timebar-score: nhãn ĐIỂM ĐỘNG nằm ngay trên thanh thời gian
+   - .submit-btn     : nút "Nộp bài" dùng chung cho mọi loại câu hỏi
+   ============================================================ */
+.quiz-card-host {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* --- Thanh thời gian ngang --- */
+.q-timebar {
+    position: relative;
+    height: 30px;
+    margin: 12px 0 14px;
+    border-radius: 16px;
+    background: #e8eef7;
+    box-shadow: inset 0 2px 4px rgba(15, 32, 64, .10);
+    overflow: hidden;
+}
+
+.q-timebar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 16px;
+    /* linear + không transition để thanh bám sát giá trị thật mỗi khung hình */
+    background: linear-gradient(90deg, #34d399, #10b981);
+    transition: background .3s ease;
+}
+
+/* Sắp hết thời gian: chuyển vàng rồi đỏ */
+.q-timebar.is-warning .q-timebar-fill {
+    background: linear-gradient(90deg, #fbbf24, #f59e0b);
+}
+
+.q-timebar.is-danger .q-timebar-fill {
+    background: linear-gradient(90deg, #f87171, #dc2626);
+    animation: sbTimePulse .9s ease-in-out infinite;
+}
+
+/* Nhãn điểm động nằm giữa thanh thời gian */
+.q-timebar-score {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    pointer-events: none;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #0f3d2e;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, .7);
+}
+
+.q-timebar-score .qts-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    opacity: .85;
+}
+
+.q-timebar-score .qts-value {
+    font-size: 13.5px;
+    font-weight: 900;
+    color: #065f46;
+}
+
+/* Sau khi nộp bài: điểm thực nhận */
+.q-timebar.is-frozen .q-timebar-fill { opacity: .45; }
+.qts-value.is-earned { color: #047857; animation: sbScorePop .45s ease-out; }
+.qts-value.is-zero   { color: #b91c1c; }
+
+/* --- Nút Nộp bài --- */
+.submit-btn {
+    align-self: flex-start;
+    margin-top: 10px;
+    padding: 11px 26px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+/* --- Bảng kết quả: cột thời gian còn lại --- */
+.result-row .r-time {
+    flex: 0 0 74px;
+    text-align: right;
+    font-size: 11.5px;
+    color: #64748b;
+    font-weight: 700;
+}
+
+/* Ẩn đồng hồ chữ số của phiên bản cũ (nếu còn sót trong dữ liệu/HTML) */
+.q-timer { display: none !important; }
+
+@keyframes sbTimePulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: .62; }
+}
+
+@keyframes sbScorePop {
+    0%   { transform: scale(.82); }
+    60%  { transform: scale(1.16); }
+    100% { transform: scale(1); }
+}
+
+/* ============================================================================
+ *  BẢN 2.2 — GIAO DIỆN CHƠI MỚI THEO ẢNH MẪU
+ *  ---------------------------------------------------------------------------
+ *  Gồm: icon silhouette rơi, câu hỏi chữ trắng hiện từng ký tự trong 3 giây,
+ *  thanh thời gian 7 màu nền đen, bố cục 2 cột khi có ảnh, 3 kiểu nút lựa chọn,
+ *  khung ảnh tương tác, bảng ghi chú nổi và nút chuyển câu.
+ * ========================================================================== */
+
+/* --- 1) Lớp icon silhouette rơi từ trên xuống --- */
+.quiz-fx {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;   /* không chặn thao tác của người chơi */
+    z-index: 0;
+}
+
+.fx-icon {
+    position: absolute;
+    top: -14vh;
+    color: rgba(255, 255, 255, .075);   /* silhouette mờ hơn nền một chút */
+    animation-name: sbFallIcon;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    will-change: transform, opacity;
+}
+
+.fx-icon svg { width: 100%; height: 100%; fill: currentColor; display: block; }
+
+@keyframes sbFallIcon {
+    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+    8%   { opacity: 1; }
+    88%  { opacity: 1; }
+    100% { transform: translateY(124vh) rotate(var(--fx-rot, 24deg)) scale(.92); opacity: 0; }
+}
+
+/* --- 2) Câu hỏi: chữ trắng đậm, hiện từng ký tự trong 3 giây --- */
+.q-text {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.45;
+    margin: 4px 0 14px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, .35);
+}
+
+.q-text .qch {
+    display: inline-block;
+    opacity: 0;
+    animation: sbCharIn .34s ease-out forwards;
+}
+
+@keyframes sbCharIn {
+    from { opacity: 0; transform: translateY(10px) scale(.9); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* --- 3) Thanh thời gian 7 MÀU, nền đen, điểm nằm giữa --- */
+.q-timebar {
+    position: relative;
+    height: 14px;
+    margin: 10px 0 20px;
+    border-radius: 999px;
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, .22);
+    overflow: visible;
+}
+
+.q-timebar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 999px;
+    /* Dải 7 màu chảy từ phải sang trái */
+    background: linear-gradient(90deg,
+        #ff3b3b, #ff9f1c, #ffd60a, #2ec4b6, #4cc9f0, #4361ee, #b5179e);
+    background-size: 700% 100%;
+    animation: sbRainbowFlow 3.2s linear infinite;
+    box-shadow: 0 0 10px rgba(255, 255, 255, .25);
+}
+
+@keyframes sbRainbowFlow {
+    from { background-position: 100% 0; }
+    to   { background-position: 0 0; }
+}
+
+.q-timebar.is-danger .q-timebar-fill { animation-duration: 1.1s; }
+
+/* Số điểm nằm ngay giữa thanh thời gian (chữ trắng đậm có viền đen) */
+.q-timebar-score {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.q-timebar-score .qts-value {
+    font-size: 19px;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+    text-shadow: 0 0 4px #000, 0 0 2px #000, 0 1px 0 #000;
+}
+
+.qts-value.is-earned { color: #b9f6d5; animation: sbScorePop .45s ease-out; }
+.qts-value.is-zero   { color: #ffb4b4; }
+
+/* --- 4) Bố cục thân câu hỏi: 2 cột khi có ảnh, căn giữa khi không --- */
+.q-body {
+    display: block;
+    position: relative;
+    z-index: 2;              /* nổi trên lớp icon rơi */
+}
+
+.question-card.has-image .q-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 26px;
+    align-items: center;
+}
+
+.q-main { min-width: 0; }
+
+.question-card.is-centered .q-main {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.question-card.is-centered .option-list,
+.question-card.is-centered .sort-area { align-items: center; }
+
+.question-card.is-centered .sort-list { width: 100%; }
+
+/* --- 5) Ba kiểu nút lựa chọn --- */
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+}
+
+.option-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 430px;
+    min-height: 52px;
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    color: #111111;
+    background: var(--opt-bg, #fdf6d8);
+    border: 2px solid #111111;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, .35);
+    transition: border-color .18s ease, background-color .18s ease, transform .14s ease,
+        box-shadow .14s ease, opacity .3s ease, filter .3s ease;
+}
+
+/* Dạng CHỌN 1: viên thuốc bo tròn hoàn toàn, nội dung canh giữa */
+.option-btn.opt-pill {
+    border-radius: 999px;
+    justify-content: center;
+    text-align: center;
+    font-size: 17px;
+}
+
+/* Dạng CHỌN NHIỀU: chữ nhật bo góc nhỏ, nền kem, có checkbox bên trái */
+.option-btn.opt-rect {
+    border-radius: 8px;
+    background: #fdf6d8;
+    justify-content: flex-start;
+}
+
+.option-num {
+    flex: 0 0 auto;
+    min-width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .16);
+    font-weight: 900;
+    font-size: 13px;
+}
+
+.option-btn.opt-pill .option-num { font-size: 14px; }
+.option-text { font-weight: 700; text-align: left; }
+
+/* Ô tích của dạng chọn nhiều */
+.option-check {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #111111;
+    border-radius: 3px;
+    background: #ffffff;
+    position: relative;
+}
+
+.option-btn.selected .option-check::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    color: #111111;
+}
+
+.option-btn:hover { transform: translateY(-2px); }
+.option-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0, 0, 0, .35); }
+.option-btn:disabled { cursor: default; }
+
+.option-btn.selected {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, .55), 0 3px 0 rgba(0, 0, 0, .35);
+}
+
+/* Hiệu ứng "BẬT RA" lần lượt từ trên xuống */
+.opt-pop { animation: sbOptPop .42s cubic-bezier(.2, .9, .3, 1.5) both; }
+
+@keyframes sbOptPop {
+    0%   { opacity: 0; transform: translateY(-18px) scale(.86); }
+    70%  { opacity: 1; transform: translateY(0) scale(1.04); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Sau khi nộp, chỉ đổi màu viền; nền và kích thước lựa chọn giữ nguyên. */
+.option-btn.is-correct { border-color: #22c55e; }
+.option-btn.is-wrong { border-color: #ef4444; }
+
+/* --- 6) Câu hỏi SẮP XẾP: kéo–thả đổi chỗ --- */
+.sort-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+.sort-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 430px;
+}
+
+.sort-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 8px 14px;
+    background: var(--opt-bg, #b9f6d5);
+    border: 2px solid #111111;
+    border-radius: 8px;
+    color: #111111;
+    font-weight: 800;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, .35);
+    transition: background-color .28s ease, border-color .28s ease, color .28s ease,
+        box-shadow .2s ease;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;      /* để kéo thả không bị cuộn trang */
+}
+
+.sort-num { min-width: 18px; font-weight: 900; }
+.sort-text { flex: 1; text-align: left; }
+.sort-handle {
+    font-weight: 900;
+    letter-spacing: -2px;
+    opacity: .75;
+    padding: 0 4px;
+    cursor: grab;
+}
+
+.sort-placeholder {
+    flex: none;
+    box-sizing: border-box;
+    border: 2px dashed rgba(255, 255, 255, .72);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .14);
+}
+
+.sort-item.is-dragging {
+    position: fixed;
+    cursor: grabbing;
+    z-index: 1000;
+    pointer-events: none;
+    transform: none !important;
+    animation: none !important;
+    box-shadow: 0 16px 30px rgba(0, 0, 0, .42);
+    transition: none !important;
+}
+.sort-list.is-sorting .sort-item:not(.is-dragging) {
+    transition: transform .2s cubic-bezier(.2,.75,.25,1);
+}
+.sort-item.is-comparing { box-shadow: 0 0 0 4px #ffd60a, 0 3px 0 rgba(0, 0, 0, .35); }
+.sort-item.is-correct {
+    border-color: #16a34a;
+    background: #86efac !important;
+    color: #14532d;
+    animation: sort-correct .62s cubic-bezier(.2,.8,.25,1.25) both;
+}
+.sort-item.is-wrong {
+    border-color: #dc2626;
+    background: #fca5a5 !important;
+    color: #7f1d1d;
+    animation: sort-shake .42s ease-in-out both;
+}
+
+@keyframes sort-correct {
+    0%, 100% { transform: scale(1); }
+    38% { transform: scale(1.045); }
+    68% { transform: scale(.985); }
+}
+
+@keyframes sort-shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-7px); }
+    40%, 80% { transform: translateX(7px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sort-item.is-correct,
+    .sort-item.is-wrong,
+    .sort-list.is-sorting .sort-item:not(.is-dragging) {
+        animation-duration: .01ms;
+        transition-duration: .01ms;
+    }
+}
+
+/* --- 7) Khung ảnh tương tác (nửa phải) --- */
+.q-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+}
+
+.q-media-inner {
+    width: 100%;
+    height: clamp(240px, 46vh, 520px);   /* chiều cao xác định => % của khung tính được */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.q-media-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.media-btn {
+    border: 2px solid #111111;
+    background: #fdf6d8;
+    color: #111111;
+    font-weight: 800;
+    font-size: 13px;
+    border-radius: 8px;
+    padding: 4px 9px;
+    cursor: pointer;
+}
+
+.media-btn:hover { background: #ffffff; }
+
+.media-size {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, .78);
+}
+
+.q-media-stage {
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+}
+
+.q-media-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border: 3px solid #111111;
+    border-radius: 8px;
+    cursor: grab;
+    touch-action: none;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
+}
+
+/* Lớp xem ảnh bên trong khung (cắt phần ảnh tràn ra ngoài khi kéo/zoom) */
+.q-media-viewport {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.q-media-frame.is-panning { cursor: grabbing; }
+.q-media-img { width: 100%; height: 100%; display: block; }
+
+.media-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 40px;
+    color: #94a3b8;
+}
+
+/* 8 điểm kéo ở viền để đổi kích thước khung */
+.media-handle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #111111;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    z-index: 3;
+}
+
+.media-handle[data-dir="n"]  { top: -8px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+.media-handle[data-dir="s"]  { bottom: -8px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+.media-handle[data-dir="w"]  { left: -8px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+.media-handle[data-dir="e"]  { right: -8px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+.media-handle[data-dir="nw"] { top: -8px; left: -8px; cursor: nwse-resize; }
+.media-handle[data-dir="ne"] { top: -8px; right: -8px; cursor: nesw-resize; }
+.media-handle[data-dir="sw"] { bottom: -8px; left: -8px; cursor: nesw-resize; }
+.media-handle[data-dir="se"] { bottom: -8px; right: -8px; cursor: nwse-resize; }
+
+/* --- 8) Bảng GHI CHÚ NỔI (kéo được, có nút thu gọn) --- */
+.quiz-note-float {
+    position: fixed;
+    right: 26px;
+    bottom: 26px;
+    z-index: 40;
+    width: min(340px, 84vw);
+    background: #fffbe6;
+    color: #4a3a00;
+    border: 2px solid #111111;
+    border-radius: 12px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, .5);
+    overflow: hidden;
+    animation: sbFadeUp .3s ease both;
+}
+
+.quiz-note-float[hidden] { display: none; }
+
+.nf-handle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    background: #ffd60a;
+    border-bottom: 2px solid #111111;
+    cursor: move;
+    touch-action: none;
+    font-size: 12.5px;
+    font-weight: 900;
+}
+
+.nf-grip { letter-spacing: -2px; opacity: .7; }
+.nf-title { flex: 1; }
+
+.nf-toggle {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #111111;
+    border-radius: 6px;
+    background: #ffffff;
+    font-weight: 900;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.nf-toggle:hover { background: #ffe9a8; }
+
+.nf-body {
+    padding: 10px 12px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    max-height: 42vh;
+    overflow: auto;
+}
+
+.quiz-note-float.is-collapsed .nf-body { display: none; }
+.quiz-note-float.is-dragging { box-shadow: 0 22px 44px rgba(0, 0, 0, .6); }
+
+/* --- 9) Nút chuyển câu (xuất hiện sau 3 giây) --- */
+.next-btn {
+    margin-top: 18px;
+    padding: 12px 28px;
+    font-size: 15px;
+    border-radius: 999px;
+    border: 2px solid #111111;
+    align-self: center;
+}
+
+.question-card.is-centered .next-btn { display: block; margin-left: auto; margin-right: auto; }
+
+/* --- 10) Khung câu hỏi & thanh tiến trình trên nền tối --- */
+.quiz-shell { max-width: 1180px; }
+
+/* Header và thanh tiến trình mờ đi cho giống ảnh mẫu, sáng rõ khi rê chuột */
+#player-view .player-header {
+    background: rgba(0, 0, 0, .38);
+    opacity: .3;
+    transition: opacity .25s ease;
+}
+
+#player-view .player-header:hover,
+#player-view .player-header:focus-within { opacity: 1; }
+
+.quiz-progress {
+    background: rgba(255, 255, 255, .10);
+    border: 1px solid rgba(255, 255, 255, .16);
+    box-shadow: none;
+    opacity: .6;
+    transition: opacity .25s ease;
+}
+
+.quiz-progress:hover { opacity: 1; }
+
+.quiz-progress-top { color: #f1f7ff; }
+.progress-track { background: rgba(0, 0, 0, .38); }
+
+.question-card {
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .16);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, .35);
+    color: #ffffff;
+    padding: 22px 26px 26px;
+}
+
+.q-number { background: #4c97ff; color: #ffffff; }
+.q-type { color: #e6f0ff; background: rgba(255, 255, 255, .14); }
+
+/* Responsive: hẹp thì xếp ảnh xuống dưới nội dung */
+@media (max-width: 900px) {
+    .question-card.has-image .q-body {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .q-media-inner { height: clamp(220px, 38vh, 420px); }
+    .q-text { font-size: 22px; }
+}
+
+
+/* ============================================================================
+ *  BẢN 2.3 — STYLE RIÊNG CHO 4 LOẠI CÂU HỎI TƯƠNG TÁC
+ *  ============================================================================
+ *  Các class mới (matching/cloze/dropdown/hotspot) ghi đè/ bổ sung cho style
+ *  cũ nếu có class trùng. Đảm bảo layout hoạt động khi người dùng chưa cập
+ *  nhật tài liệu (style cũ vẫn còn cho trường hợp dùng schema cũ hiếm hoi).
+ * ========================================================================== */
+
+/* ---- MATCHING 2-N: 2 cột khái niệm ↔ giải thích + cúc tròn + SVG overlay ---- */
+.match-2n-area {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    column-gap: clamp(10px, 3vw, 32px);
+    padding: 16px 0;
+    min-height: 120px;
+}
+.match-2n-area .match-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    position: relative;
+    z-index: 2;
+}
+.match-2n-area .match-col-left,
+.match-2n-area .match-col-right {
+    float: none;
+    align-items: stretch;
+}
+.match-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; overflow: visible; }
+.match-2n-area .match-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    background: white;
+    border: 1.5px solid #e3e8f0;
+    border-radius: 12px;
+    padding: 8px 12px;
+    min-height: 44px;
+    box-shadow: 0 2px 6px rgba(76,151,255,.05);
+}
+.match-2n-area .match-box .match-text {
+    min-width: 0;
+    font-size: 14px;
+    color: #2b3445;
+    line-height: 1.4;
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+.match-buttons { display: inline-flex; gap: 6px; padding-left: 4px; }
+.match-button-slot { display: inline-flex; align-items: center; padding-right: 4px; }
+.match-button { width: 28px; height: 28px; border-radius: 50%; background: #f1f5fb; border: 2px solid #cfd8e6; cursor: pointer; font-size: 12px; font-weight: 800; color: #4c97ff; transition: all .18s ease; padding: 0; line-height: 1; flex-shrink: 0; touch-action: none; }
+.match-button:hover:not(:disabled) { background: #e9f3ff; border-color: #4c97ff; transform: scale(1.1); }
+.match-button:focus { outline: none; }
+.match-button.is-selected { background: #fbbf24; border-color: #b45309; color: #fff; transform: scale(1.15); box-shadow: 0 2px 8px rgba(251,191,36,.5); }
+.match-button.is-filled { background: #22c55e; border-color: #16a34a; color: #fff; }
+.match-button:disabled { opacity: .55; cursor: not-allowed; }
+.match-line { fill: none; stroke-width: 2.5; stroke-linecap: round; transition: stroke .22s ease; }
+.match-line.is-active { stroke: #fbbf24; }
+.match-line.is-correct { stroke: #22c55e; }
+.match-line.is-wrong { stroke: #ef4444; stroke-dasharray: 5 4; }
+.match-line.is-missing { stroke: #eab308; stroke-dasharray: 2 3; }
+/* Đường nối NHÁP: hiện khi người chơi đang chọn/kéo ô tròn bên trái */
+.match-line.is-preview { stroke: #4c97ff; stroke-width: 2; stroke-dasharray: 6 5; opacity: .9; animation: matchDashMove .6s linear infinite; }
+@keyframes matchDashMove { to { stroke-dashoffset: -22; } }
+
+/* Ô tròn đang kéo / ô đích khi rê chuột */
+.match-2n-area .match-button.is-dragging { transform: scale(1.2); box-shadow: 0 3px 10px rgba(76,151,255,.45); cursor: grabbing; }
+.match-2n-area .match-button.is-target { border-color: #4c97ff; background: #e9f3ff; transform: scale(1.15); }
+.match-2n-area .match-box.is-target { border-color: #4c97ff; box-shadow: 0 0 0 3px rgba(76,151,255,.18); }
+
+/* ============================================================================
+ *  BẢN 2.5 — GIAO DIỆN "MỖI Ô 1 NÚT" (CHỈ ÁP DỤNG CHO PLAYER VIEW)
+ *  ---------------------------------------------------------------------------
+ *  Trình chỉnh sửa (js/ui/editor.js) giữ nguyên giao diện cấu hình cặp
+ *  khái niệm – giải thích (mỗi khái niệm có N cúc tròn + 1 cúc "+").
+ *  Mọi kiểu bên dưới đều gắn với lớp .match-2n-player nên KHÔNG bao giờ lan
+ *  sang giao diện thiết lập trong Editor.
+ * ========================================================================== */
+.match-2n-area.match-2n-player { user-select: none; -webkit-user-select: none; }
+.match-2n-area.match-2n-player .match-box { gap: 12px; }
+.match-2n-area.match-2n-player .match-button {
+    width: 30px; height: 30px; font-size: 12px; cursor: grab;
+}
+/* Nút bên trái là "cần kéo" ⇒ viền đứt khi chưa nối */
+.match-2n-area.match-2n-player .match-button[data-side="L"]:not(.is-filled) { border-style: dashed; }
+.match-2n-area.match-2n-player .match-button.is-dragging { cursor: grabbing; }
+.match-2n-area.match-2n-player .match-box:hover .match-button { border-color: #4c97ff; }
+.match-2n-area.match-2n-player .match-box.is-target { border-color: #4c97ff; background: #f4f9ff; }
+
+/* Huy hiệu số khái niệm đang nối tới một ô giải thích (quan hệ nhiều-nhiều) */
+.match-2n-area.match-2n-player .match-badge {
+    flex-shrink: 0;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #22c55e;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 20px;
+    text-align: center;
+}
+.match-2n-area.match-2n-player .match-badge[hidden] { display: none; }
+
+/* Bản xem trước trong sân khấu dùng cùng thẻ giao diện với chế độ chơi. */
+.stage-player-preview { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.stage-preview-label { flex: 0 0 auto; margin-bottom: 8px; color: #52627a; font-size: 11px; font-weight: 800; }
+.stage-player-viewport { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.stage-player-canvas { width: 1180px; transform-origin: top left; pointer-events: none; }
+.stage-player-canvas .question-card { width: 100%; margin: 0; }
+
+/* ---- CLOZE v23: danh sách vàng #FEF3C7 cho blank sai ---- */
+.cloze-answers { display: inline-block; vertical-align: middle; background: #FEF3C7; border: 1px solid #fbbf24; border-radius: 8px; padding: 4px 6px; margin: 4px 3px; font-size: 13px; color: #78350f; line-height: 1.5; }
+.cloze-answers-select { max-width: 220px; background: #FEF3C7; border: 1px solid #fbbf24; border-radius: 6px; padding: 3px 7px; color: #78350f; font: inherit; }
+
+/* ---- DROPDOWN v23: chip + popup .dd-list ---- */
+.dd-chip-wrap { position: relative; display: inline-block; vertical-align: baseline; margin: 0 2px; }
+.dd-chip { background: #fff5f6; border: 2px solid #ff7b8b; border-radius: 12px; padding: 5px 14px; font-size: 13px; font-weight: 700; color: #b1304b; cursor: pointer; min-width: 110px; text-align: left; transition: all .18s ease; }
+.dd-chip:hover:not(:disabled):not(.is-locked) { background: #ffe5e9; }
+.dd-chip.is-correct { background: #e8fbee; border-color: #22c55e; color: #15803d; }
+.dd-chip.is-wrong { background: #fdecec; border-color: #ef4444; color: #b91c1c; }
+.dd-chip.is-locked { cursor: not-allowed; opacity: .85; }
+.dd-toggle { background: transparent; border: 1px solid #cfd8e6; border-radius: 50%; width: 24px; height: 24px; font-size: 11px; color: #4c97ff; cursor: pointer; vertical-align: middle; margin-left: 4px; }
+.dd-toggle:hover { background: #e9f3ff; border-color: #4c97ff; }
+.dd-toggle[hidden] { display: none; }
+.dd-list { position: absolute; top: calc(100% + 4px); left: 0; min-width: 160px; background: white; border: 1px solid #d5dae1; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,.15); list-style: none; padding: 4px 0; z-index: 30; max-height: 240px; overflow-y: auto; }
+.dd-list[hidden] { display: none; }
+.dd-list li { padding: 6px 14px; font-size: 13px; cursor: pointer; transition: background .15s ease; }
+.dd-list li:hover { background: #f1f5fb; }
+.dd-list li.is-selected { background: #d6e8ff; font-weight: 700; }
+.dd-list li.is-correct { background: #e8fbee; color: #15803d; font-weight: 700; }
+.dd-list li.is-wrong { background: #fdecec; color: #b91c1c; font-weight: 700; }
+
+/* Ba lớp phản hồi vùng ảnh: đáp án vàng, lựa chọn đỏ, phần giao xanh. */
+.hotspot-stage-v23 { position: relative; cursor: default; touch-action: none; }
+.hs-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+.hs-region { position: absolute; box-sizing: border-box; pointer-events: auto; border-radius: 6px; transition: background .2s ease, border-color .2s ease, opacity .3s ease; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: white; }
+.hs-answer-layer { z-index: 2; opacity: 0; transition: opacity .35s ease; }
+.hs-user-layer { z-index: 3; }
+.hs-overlap-layer { z-index: 4; }
+.hs-answer { background: rgba(250,204,21,.48); border: 2px solid #eab308; pointer-events: none; }
+.hs-answer .region-label { position: absolute; top: 4px; left: 6px; background: rgba(255,255,255,.95); color: #854d0e; font-size: 11px; padding: 1px 8px; border-radius: 10px; }
+.hs-user { background: rgba(239,68,68,.48); border: 2px solid #dc2626; cursor: move; }
+.hs-user.hs-user-region.is-dragging { opacity: .7; transform: scale(.95); cursor: grabbing; box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+.hs-user.hs-user-region.is-locked { opacity: .75; cursor: not-allowed; }
+.hs-region.is-circle { border-radius: 50%; }
+.hs-overlap-mask { position: absolute; overflow: hidden; pointer-events: none; }
+.hs-overlap-mask.is-circle { border-radius: 50%; }
+.hs-overlap-shape { position: absolute; background: rgba(34,197,94,.72); }
+.hs-overlap-shape.is-circle { border-radius: 50%; }
+
+/* Editor hotspot (khi chỉnh sửa) - draft is-draft */
+.hs-region.is-draft { background: rgba(239,68,68,.5); border: 2px solid #dc2626; }
+.hs-region.is-draft:hover { background: rgba(239,68,68,.7); }
+.hs-region-handle { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; background: white; border: 1px solid #cfd8e6; border-radius: 12px; padding: 2px; box-shadow: 0 2px 6px rgba(0,0,0,.15); z-index: 10; }
+.hs-region-handle button { width: 22px; height: 22px; border-radius: 50%; border: none; background: #f1f5fb; color: #4c97ff; cursor: pointer; font-size: 11px; padding: 0; line-height: 1; }
+.hs-region-handle button:hover { background: #4c97ff; color: white; }
+.hs-region-handle button.del { background: #fdecec; color: #b91c1c; }
+.hs-region-handle button.del:hover { background: #ef4444; color: white; }
+
+/* ============================================================
+ *  BẢN 2.3 (C1 / D1) — ĐOẠN VĂN CLOZE & DROPDOWN XUẤT HIỆN LẦN LƯỢT TRONG 3s
+ *  `animation-delay` được chia đều trong JS (js/player/player.js —
+ *  animateClozeParagraph / animateDropdownParagraph).
+ * ============================================================ */
+.cloze-ch { display: inline; animation: sbFadeUp .4s ease both; }
+.cloze-blank-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    animation: sbPopIn .38s cubic-bezier(.2,.9,.3,1.4) both;
+}
+.cloze-blank-wrap .cloze-answers { display: inline-block; }
+.dd-ch { display: inline; animation: sbFadeUp .4s ease both; }
+.dd-chip-wrap { animation: sbPopIn .38s cubic-bezier(.2,.9,.3,1.4) both; }

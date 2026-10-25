@@ -1,0 +1,453 @@
+/* ============================================================
+   PHẦN BỔ SUNG: MODAL CHỈNH SỬA CHI TIẾT
+   ============================================================ */
+.editor-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 30, 60, .55);
+    backdrop-filter: blur(3px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: sbFadeUp .22s ease both;
+}
+
+.editor-overlay[hidden] { display: none; }
+
+.editor-modal {
+    width: min(720px, 92vw);
+    max-height: 88vh;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.35);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: sbPopIn .3s cubic-bezier(.2,.9,.3,1.3) both;
+}
+
+.editor-header {
+    background: linear-gradient(135deg, #855CD6, #4c97ff);
+    color: white;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.editor-header h3 { font-size: 16px; font-weight: 800; }
+
+.editor-close {
+    background: rgba(255,255,255,.2);
+    border: none;
+    color: white;
+    font-size: 22px;
+    line-height: 1;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform .18s ease, background .18s ease;
+}
+
+.editor-close:hover { background: rgba(255,255,255,.38); transform: rotate(90deg); }
+
+.editor-body { padding: 18px; overflow-y: auto; flex: 1; }
+
+.editor-footer {
+    padding: 12px 18px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background: #fafbfc;
+}
+
+.btn {
+    border: none;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.btn:active { transform: scale(.96); }
+
+.btn-primary { background: #4c97ff; color: white; box-shadow: 0 3px 10px rgba(76,151,255,.4); }
+.btn-primary:hover { background: #3d87e8; }
+.btn-ghost { background: #eef1f5; color: #555; }
+.btn-ghost:hover { background: #e2e6ec; }
+.btn-add { background: #e8f2ff; color: #2f7fd8; padding: 6px 12px; font-size: 12px; }
+.btn-add:hover { background: #d6e8ff; }
+.btn-del { background: #ffe9e9; color: #d63c3c; padding: 5px 10px; font-size: 12px; }
+.btn-del:hover { background: #ffd6d6; }
+
+/* Nhóm trường trong form cấu hình */
+.form-group { margin-bottom: 16px; }
+.form-group > label,
+.form-label { display: block; font-size: 13px; font-weight: 700; color: #444; margin-bottom: 6px; }
+.form-hint { font-size: 11.5px; color: #8b95a3; margin-top: 4px; font-style: italic; }
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #d5dae1;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #333;
+    background: #fff;
+    transition: border-color .16s ease, box-shadow .16s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #4c97ff;
+    box-shadow: 0 0 0 3px rgba(76,151,255,.18);
+}
+
+.form-textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+
+.form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.form-row > .form-group { flex: 1; min-width: 140px; }
+
+/* Switch bật/tắt */
+.switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f6f8fb;
+    border: 1px solid #e6eaf0;
+    border-radius: 9px;
+    padding: 10px 12px;
+}
+
+.switch { position: relative; width: 44px; height: 24px; flex: 0 0 auto; }
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.switch-slider {
+    position: absolute;
+    inset: 0;
+    background: #cbd2db;
+    border-radius: 24px;
+    transition: background .22s ease;
+    cursor: pointer;
+}
+
+.switch-slider::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform .22s cubic-bezier(.2,.9,.3,1.4);
+    box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+
+.switch input:checked + .switch-slider { background: #4c97ff; }
+.switch input:checked + .switch-slider::before { transform: translateX(20px); }
+
+/* Danh sách dòng cấu hình (đáp án, hạng mục, ...) */
+.row-list { display: flex; flex-direction: column; gap: 8px; }
+
+.row-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f9fafc;
+    border: 1px solid #e8ecf2;
+    border-radius: 8px;
+    padding: 7px 9px;
+}
+
+.row-item .row-index {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #4c97ff;
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.row-item input[type="text"] { flex: 1; min-width: 80px; }
+
+.row-item .check-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #556;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+}
+
+.row-item input[type="checkbox"] { accent-color: #0fbd8c; width: 15px; height: 15px; }
+.row-actions { display: flex; gap: 4px; }
+
+.icon-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    transition: background .16s ease, transform .16s ease;
+}
+
+.icon-btn:hover { background: #eceff4; transform: translateY(-1px); }
+
+.section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #333;
+    margin: 4px 0 8px;
+    padding-left: 9px;
+    border-left: 4px solid #4c97ff;
+    line-height: 1.3;
+}
+
+.section-title.purple { border-left-color: #9966ff; }
+.section-title.green  { border-left-color: #0fbd8c; }
+.section-title.orange { border-left-color: #ffab19; }
+.section-title.pink   { border-left-color: #ff6680; }
+
+/* ============================================================
+   BẢN 2.0: THANH TAB TRONG MODAL CẤU HÌNH
+   ------------------------------------------------------------
+   Tab 1 "Cấu hình" dùng form sẵn có.
+   Tab 2 "Lập trình khối" chứa vùng kéo thả khối (css/coding.css).
+   Khi mở tab 2, modal được nới rộng (.coding-mode).
+   ============================================================ */
+.editor-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 8px 14px 0;
+    background: #f4f7fb;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.editor-tab {
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    padding: 9px 16px;
+    border-radius: 9px 9px 0 0;
+    cursor: pointer;
+    transition: background .16s ease, color .16s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.editor-tab:hover { background: #e9eff8; color: #334155; }
+
+.editor-tab.active,
+.editor-tab.is-active {
+    background: #ffffff;
+    color: #2f6fd0;
+    border-color: #e2e8f0;
+    box-shadow: 0 -2px 8px rgba(76, 151, 255, .10);
+}
+
+/* Badge số khối lệnh trên tab "Lập trình khối" */
+.editor-tab-count {
+    min-width: 20px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 9px;
+    background: #4c97ff;
+    color: #fff;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+}
+
+/* Modal rộng hơn khi ở tab lập trình khối */
+.editor-modal.coding-mode {
+    width: min(1180px, 97vw);
+    height: min(88vh, 900px);
+}
+
+/* Vùng lập trình khối chiếm toàn bộ thân modal, tự cuộn bên trong */
+.editor-code-container {
+    height: 100%;
+    min-height: 420px;
+}
+
+.editor-modal.coding-mode .editor-body {
+    overflow: hidden;
+    padding: 0;
+}
+
+/* Phần tử bị ẩn bằng thuộc tính hidden vẫn phải ẩn dù có display:flex/block */
+#editor-form-container[hidden],
+#editor-code-container[hidden] {
+    display: none !important;
+}
+
+/* Cảnh báo lỗi chương trình khối lệnh hiển thị trên thẻ câu hỏi */
+.q-note-error {
+    background: #fff1f1;
+    border-left-color: #ef4444;
+    color: #b42318;
+}
+
+/* ============================================================
+   BẢN 2.2: PHẦN "ẢNH CỦA CÂU HỎI" TRONG BẢNG CẤU HÌNH
+   ============================================================ */
+.section-title.blue { border-left-color: #4c97ff; }
+
+.image-form { margin-bottom: 4px; }
+
+.image-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.hidden-file { display: none; }
+
+.image-fit {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #555;
+}
+
+.image-fit .form-input {
+    width: auto;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+
+.image-preview-wrap {
+    position: relative;
+    min-height: 120px;
+    border: 2px dashed #cfd8e6;
+    border-radius: 10px;
+    background: #f8fbff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    margin-bottom: 14px;
+    overflow: hidden;
+}
+
+.image-preview {
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: 8px;
+    display: block;
+}
+
+.image-preview[hidden] { display: none; }
+
+.image-preview-empty {
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.image-preview-empty[hidden] { display: none; }
+
+.image-size-hint { color: #b45309; }
+.image-size-hint[hidden] { display: none; }
+
+/* ============================================================
+ *  BẢN 2.3 — EDITOR 4 LOẠI CÂU HỎI TƯƠNG TÁC
+ *  (matching nối ô trực quan · dropdown thân thiện · hotspot vùng đỏ)
+ * ============================================================ */
+
+/* --- Editor nối ô trực quan (matching) --- */
+.editor-match-area { margin-bottom: 8px; }
+.match-editor-hint { margin-bottom: 8px; }
+.editor-match-2n { min-height: 150px; padding: 10px 0; }
+.editor-match-2n .match-col { width: 44%; max-width: 46%; }
+.editor-match-2n .match-box { padding: 6px 8px; gap: 6px; }
+.editor-match-2n .match-text { flex: 1; min-width: 0; display: block; }
+.match-text-input {
+    width: 100%;
+    font-size: 13px;
+    padding: 4px 6px;
+    border: 1px solid #e3e8f0;
+    background: #fff;
+}
+.match-text-input:focus { border-color: #4c97ff; outline: none; }
+.match-del { flex-shrink: 0; }
+.editor-match-toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+/* --- Editor dropdown thân thiện --- */
+.dd-editor-list { display: flex; flex-direction: column; gap: 12px; margin: 8px 0 10px; }
+.dd-editor-item { border: 1px solid #e3e8f0; border-radius: 10px; padding: 10px 12px; background: #fbfcfe; }
+.dd-editor-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.dd-editor-title { font-weight: 800; font-size: 13px; color: #b1304b; }
+.dd-editor-head .icon-btn { margin-left: auto; }
+.dd-options-input { min-height: 60px; }
+.dd-editor-correct { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.dd-editor-correct .check-label { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; }
+
+/* --- Editor vùng đỏ trên ảnh (hotspot) --- */
+.editor-hotspot-stage {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    margin: 8px 0;
+    border: 1px dashed #cfd8e6;
+    border-radius: 12px;
+    background: #f4f7fb;
+}
+.editor-hotspot-stage .hotspot-bg {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+.hs-draft-layer { pointer-events: none; }
+.hs-draft-layer .hs-region { pointer-events: auto; cursor: move; }
+.hs-draft-layer .hs-region.is-dragging { opacity: .75; }
+.hs-draft-layer .hs-region.is-circle { border-radius: 50%; }
+.hs-label-input {
+    width: 92%;
+    font-size: 11px;
+    padding: 1px 4px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,.85);
+    text-align: center;
+}
+.hotspot-editor-empty { padding: 26px 18px; font-size: 12.5px; color: #8b95a3; text-align: center; }
+.hotspot-editor-empty[hidden] { display: none; }
+.hotspot-editor-toolbar { display: flex; gap: 8px; margin-top: 8px; }
+.hs-region-handle input[type="checkbox"] { width: 15px; height: 15px; accent-color: #dc2626; margin: 0 2px; }
+.hs-region-handle .hs-shape-toggle { width: auto; min-width: 36px; padding: 0 5px; border-radius: 10px; color: #7c3aed; }
+
+
+
+.match-overlay { pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; overflow: visible; }

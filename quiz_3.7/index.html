@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch Quiz Builder 2.3</title>
+
+    <!-- ====================================================================
+         CSS được tách theo từng nhóm chức năng (dễ bảo trì):
+           base       : biến màu, reset, bố cục 3 cột, top bar
+           blocks     : màu khối câu hỏi + animation
+           editor     : modal cấu hình chi tiết
+           player     : giao diện chơi quiz
+           components : toast, menu, tab, danh sách câu hỏi
+           coding     : vùng lập trình khối kiểu Scratch (bản 2.0)
+         ==================================================================== -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/blocks.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/coding.css">
+</head>
+<body>
+    <div id="app-container">
+
+        <!-- ================================================================
+             THANH ĐIỀU HƯỚNG TRÊN CÙNG
+             ================================================================ -->
+        <header id="top-bar">
+            <div class="top-bar-left">
+                <div class="scratch-logo">QUIZ</div>
+
+                <div class="menu-wrap">
+                    <button class="menu-btn" id="file-menu-btn"><strong>File</strong> ▾</button>
+                    <div class="menu-dropdown" id="file-menu" hidden>
+                        <button class="menu-item" data-action="new">🆕 Dự án mới</button>
+                        <button class="menu-item" data-action="save">💾 Lưu dự án (trình duyệt)</button>
+                        <button class="menu-item" data-action="load">📂 Mở dự án đã lưu</button>
+                        <button class="menu-item" data-action="export">📤 Xuất ra tệp JSON</button>
+                        <button class="menu-item" data-action="import">📥 Nhập từ tệp JSON</button>
+                    </div>
+                </div>
+
+                <div class="menu-wrap">
+                    <button class="menu-btn" id="setting-menu-btn"><strong>Setting</strong> ▾</button>
+                    <div class="menu-dropdown" id="setting-menu" hidden>
+                        <label class="menu-item menu-toggle">
+                            <span>⏱️ Bật đồng hồ đếm ngược</span>
+                            <input type="checkbox" id="setting-timer" checked>
+                        </label>
+                        <label class="menu-item menu-toggle">
+                            <span>🎲 Xáo trộn câu hỏi khi chơi</span>
+                            <input type="checkbox" id="setting-shuffle">
+                        </label>
+                        <label class="menu-item menu-toggle">
+                            <span>📊 Hiện điểm ngay khi trả lời</span>
+                            <input type="checkbox" id="setting-instant-score" checked>
+                        </label>
+                        <label class="menu-item menu-toggle">
+                            <span>✨ Hiệu ứng nền khi chơi (icon rơi)</span>
+                            <input type="checkbox" id="setting-fx" checked>
+                        </label>
+                    </div>
+                </div>
+
+                <input type="text" class="project-title" value="Dự án Quiz của tôi">
+            </div>
+
+            <div class="top-bar-right">
+                <!-- Nút Chạy / Bắt đầu (giống cờ xanh Scratch) -->
+                <button id="start-btn" title="Bắt đầu Quiz">⚑</button>
+                <!-- Nút Dừng -->
+                <button id="stop-btn" title="Dừng">🛑</button>
+            </div>
+        </header>
+
+        <!-- ================================================================
+             GIAO DIỆN CHÍNH (3 CỘT)
+             ================================================================ -->
+        <main id="main-layout">
+
+            <!-- CỘT 1: TOOLBOX (danh mục câu hỏi + danh sách câu hỏi) -->
+            <section id="toolbox-pane">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="code">Code</button>
+                    <button class="tab-btn" data-tab="questions">Câu hỏi</button>
+                </div>
+
+                <div class="toolbox-content">
+                    <div class="category-sidebar">
+                        <div class="category-item active">
+                            <span class="dot blue"></span> Câu hỏi
+                        </div>
+                        <div class="category-item">
+                            <span class="dot purple"></span> Cài đặt
+                        </div>
+                    </div>
+
+                    <!-- Danh sách khối mẫu dùng để kéo thả (tab Code)
+                         Bản 2.1: trắc nghiệm 1 đáp án và nhiều đáp án đã GỘP
+                         thành một loại duy nhất (tự nhận diện theo số đáp án đúng) -->
+                    <div class="blocks-list" id="block-list" data-panel="code">
+                        <div class="block-item" draggable="true" data-type="multiple-choice">
+                            <span class="block-icon">📝</span> Trắc nghiệm (1 hoặc nhiều đáp án)
+                        </div>
+                        <div class="block-item" draggable="true" data-type="ordering">
+                            <span class="block-icon">🔢</span> Sắp xếp thứ tự
+                        </div>
+                        <div class="block-item" draggable="true" data-type="matching">
+                            <span class="block-icon">🔗</span> Nối ô (Matching)
+                        </div>
+                        <div class="block-item" draggable="true" data-type="hotspot">
+                            <span class="block-icon">🖼️</span> Chọn vùng trên ảnh
+                        </div>
+                        <div class="block-item" draggable="true" data-type="cloze">
+                            <span class="block-icon">✍️</span> Điền từ vào đoạn văn
+                        </div>
+                        <div class="block-item" draggable="true" data-type="dropdown">
+                            <span class="block-icon">🔽</span> Chọn từ trong danh sách
+                        </div>
+                    </div>
+
+                    <!-- Danh sách câu hỏi đang có trong dự án (tab Câu hỏi) -->
+                    <div class="blocks-list" id="question-list" data-panel="questions" hidden></div>
+                </div>
+            </section>
+
+            <!-- CỘT 2: WORKSPACE
+                 #workspace-canvas  = khung cuộn, kích thước = base x zoom
+                 #canvas-content    = lớp chứa khối, bị transform: scale()
+                 => tách 2 lớp giúp toạ độ luôn chính xác khi zoom (bản 2.0) -->
+            <section id="workspace-pane">
+                <div id="workspace-hint">
+                    💡 Nhấn <b>2 lần</b> để xem trước · <b>3 lần</b> (hoặc nút ⚙️) để mở cấu hình ·
+                    <b>Ctrl + lăn chuột</b> để zoom · Giữ chuột ở nền để di chuyển
+                </div>
+                <div id="workspace-canvas">
+                    <div id="canvas-content"></div>
+                </div>
+            </section>
+
+            <!-- CỘT 3: PREVIEW & STAGE -->
+            <section id="preview-pane">
+                <!-- Hàng trên: Sân khấu thu nhỏ -->
+                <div id="stage-area"></div>
+
+                <!-- Hàng dưới: Thông tin nhân vật / thuộc tính -->
+                <div id="properties-area">
+                    <div class="sprite-info"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ================================================================
+             GIAO DIỆN PLAYER (ẩn, hiện khi bấm nút cờ xanh)
+             ================================================================ -->
+        <section id="player-view" style="display: none;">
+            <header class="player-header">
+                <h2>Quiz Mode (Chế độ chơi)</h2>
+                <div style="display:flex;gap:10px;align-items:center">
+                    <button id="result-btn" class="btn btn-ghost"
+                            style="background:rgba(255,255,255,.22);color:#fff">📊 Xem kết quả</button>
+                    <button id="back-btn">Quay lại Builder</button>
+                </div>
+            </header>
+            <div id="quiz-player-container"></div>
+        </section>
+
+        <!-- ================================================================
+             MODAL CẤU HÌNH CHI TIẾT (mở khi nhấn 3 lần vào khối / nút ⚙️)
+             Modal có 2 tab: "Cấu hình" và "Lập trình khối" (bản 2.0)
+             ================================================================ -->
+        <div id="block-editor-overlay" class="editor-overlay" hidden>
+            <div id="block-editor-modal" class="editor-modal" role="dialog"
+                 aria-modal="true" aria-labelledby="editor-title">
+
+                <header class="editor-header">
+                    <h3 id="editor-title">Cấu hình câu hỏi</h3>
+                    <button id="editor-close-btn" class="editor-close" title="Đóng">&times;</button>
+                </header>
+
+                <!-- Thanh tab của modal -->
+                <div class="editor-tabs" role="tablist">
+                    <button type="button" class="editor-tab active" data-editor-tab="config" role="tab">
+                        📋 Cấu hình
+                    </button>
+                    <button type="button" class="editor-tab" data-editor-tab="code" role="tab">
+                        🧩 Lập trình khối
+                        <span id="editor-tab-count" class="editor-tab-count" hidden></span>
+                    </button>
+                </div>
+
+                <div class="editor-body">
+                    <!-- Tab 1: form cấu hình (JS sinh động) -->
+                    <div id="editor-form-container"></div>
+                    <!-- Tab 2: vùng lập trình khối (JS sinh động) -->
+                    <div id="editor-code-container" class="editor-code-container" hidden></div>
+                </div>
+
+                <footer class="editor-footer">
+                    <button id="editor-cancel-btn" class="btn btn-ghost">Hủy bỏ</button>
+                    <button id="editor-save-btn" class="btn btn-primary">Lưu cấu hình</button>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Input tệp ẩn dùng cho chức năng nhập dự án JSON -->
+    <input type="file" id="import-file-input" accept="application/json,.json" hidden>
+
+    <!-- ====================================================================
+         JAVASCRIPT — nạp theo ĐÚNG THỨ TỰ phụ thuộc (classic script,
+         dùng chung phạm vi toàn cục, không cần bundler):
+           1. utils          : hàm tiện ích dùng chung
+           2. block-types    : schema 6 loại câu hỏi (đã gộp trắc nghiệm)
+           3. state          : DOM refs + trạng thái toàn cục
+           4. geometry       : toạ độ / zoom / vùng xoá
+           5. block-manager  : tạo, kéo, xoá khối câu hỏi
+           6. interactions   : kéo từ toolbox, pan, zoom
+           7. render         : vẽ khối, sân khấu, thuộc tính
+           8. editor         : modal cấu hình (2 tab)
+           9. coding-engine  : mô hình + trình thông dịch khối lệnh
+          10. coding-ui      : giao diện kéo thả khối lệnh
+          11. player         : chế độ chơi & chấm điểm
+          12. app            : khởi tạo, menu, lưu trữ
+         ==================================================================== -->
+    <script src="js/core/utils.js"></script>
+    <script src="js/core/block-types.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/workspace/geometry.js"></script>
+    <script src="js/workspace/block-manager.js"></script>
+    <script src="js/workspace/interactions.js"></script>
+    <script src="js/ui/render.js"></script>
+    <script src="js/ui/editor.js"></script>
+    <script src="js/coding/coding-engine.js"></script>
+    <script src="js/coding/coding-ui.js"></script>
+    <script src="js/player/player.js"></script>
+    <script src="js/app/app.js"></script>
+</body>
+</html>
